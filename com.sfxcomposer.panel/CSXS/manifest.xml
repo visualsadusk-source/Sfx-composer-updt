@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SFX Composer — CEP extension manifest.
+
+  A single Extension declaration serves both Premiere Pro and After Effects.
+  CEP matches the running application against HostList at load time, so one
+  installed bundle appears in the Extensions menu of either host.
+
+  CSXS 9.0 is the lowest runtime that supports every API this panel relies on
+  (Node integration, the modern CSInterface, persistent panel state) while
+  remaining loadable in CC 2019 and newer.
+-->
+<ExtensionManifest Version="9.0"
+                   ExtensionBundleId="com.sfxcomposer.panel"
+                   ExtensionBundleName="SFX Composer"
+                   ExtensionBundleVersion="2.2.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="com.sfxcomposer.panel.main" Version="2.2.0" />
+  </ExtensionList>
+
+  <ExecutionEnvironment>
+    <HostList>
+      <!-- Premiere Pro CC 2019 (13.0) and newer -->
+      <Host Name="PPRO" Version="[13.0,99.9]" />
+      <!-- After Effects CC 2019 (16.0) and newer -->
+      <Host Name="AEFT" Version="[16.0,99.9]" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="9.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+
+  <DispatchInfoList>
+    <Extension Id="com.sfxcomposer.panel.main">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./dist/index.html</MainPath>
+          <ScriptPath>./dist/host/sfxbox.jsx</ScriptPath>
+          <CEFCommandLine>
+            <!-- Node integration: the library index reads the user's own SFX folders. -->
+            <Parameter>--enable-nodejs</Parameter>
+            <!-- Node globals stay available after the page navigates. -->
+            <Parameter>--mixed-context</Parameter>
+            <!-- Decoding local audio files for preview requires file:// XHR/fetch. -->
+            <Parameter>--allow-file-access-from-files</Parameter>
+            <Parameter>--allow-file-access</Parameter>
+          </CEFCommandLine>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <!--
+            The menu entry name is fixed at install time; CEP offers no runtime
+            API to rename it. White-label renaming therefore applies to every
+            surface inside the panel, and resellers who need the menu entry
+            renamed must repackage with a patched manifest. See docs/BRANDING.md.
+          -->
+          <Menu>SFX Composer</Menu>
+          <Geometry>
+            <Size><Height>620</Height><Width>420</Width></Size>
+            <MinSize><Height>360</Height><Width>320</Width></MinSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">./assets/icons/icon-normal.png</Icon>
+            <Icon Type="RollOver">./assets/icons/icon-rollover.png</Icon>
+            <Icon Type="DarkNormal">./assets/icons/icon-normal.png</Icon>
+            <Icon Type="DarkRollOver">./assets/icons/icon-rollover.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>
