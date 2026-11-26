@@ -1,0 +1,344 @@
+/* ==========================================================================
+   SFX COMPOSER — INLINE TIMELINE LAYER COLOR LABELS
+   Compact, inline color label strip matching the reference design
+   ========================================================================== */
+
+.sfx-ll {
+  display: flex;
+  flex-direction: column;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  padding: 6px 12px 8px;
+  box-sizing: border-box;
+  user-select: none;
+  font-family: var(--sfx-font);
+  position: relative;
+  z-index: 10;
+}
+
+.sfx-ll *, .sfx-ll *::before, .sfx-ll *::after {
+  box-sizing: border-box;
+}
+
+/* ── Top Header Row ── */
+.sfx-ll__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  height: 20px;
+}
+
+.sfx-ll__title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sfx-ll__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #9ca3af;
+  display: inline-block;
+}
+
+.sfx-ll__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--sfx-text-secondary);
+}
+
+.sfx-ll__settings-btn {
+  background: transparent;
+  border: none;
+  color: var(--sfx-text-muted);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.sfx-ll__settings-btn:hover {
+  color: var(--sfx-text);
+  background: var(--sfx-surface-raised);
+}
+
+.sfx-ll__settings-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ── Mode Badges (L, C, F, O, T) ── */
+.sfx-ll__badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sfx-ll__badge {
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  border: 1px solid var(--sfx-border);
+  background: var(--sfx-surface-sunken);
+  color: var(--sfx-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.sfx-ll__badge:hover {
+  background: var(--sfx-surface-raised);
+  color: var(--sfx-text);
+  border-color: var(--sfx-border-strong);
+}
+
+.sfx-ll__badge.is-active {
+  background: var(--sfx-accent);
+  color: var(--sfx-text-on-accent);
+  border-color: var(--sfx-accent);
+  box-shadow: 0 0 10px var(--sfx-accent-35);
+}
+
+/* ── Segmented Color Bar Strip ── */
+.sfx-ll__strip {
+  display: flex;
+  width: 100%;
+  height: 18px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--sfx-border);
+  background: var(--sfx-surface-sunken);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.sfx-ll__swatch {
+  flex: 1;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sfx-ll__swatch:hover {
+  opacity: 0.9;
+  z-index: 2;
+  transform: scaleY(1.15);
+}
+
+.sfx-ll__swatch:active {
+  transform: scaleY(1);
+}
+
+/* Swatch Selected Indicator */
+.sfx-ll__swatch.is-selected::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8), 0 0 3px #ffffff;
+}
+
+/* ── Settings Popover ── */
+.sfx-ll__popover {
+  position: absolute;
+  top: 48px;
+  left: 12px;
+  z-index: 1000;
+  width: 270px;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.75);
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sfx-ll__popover.is-open {
+  display: flex;
+}
+
+.sfx-ll__popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--sfx-border);
+  padding-bottom: 6px;
+}
+
+.sfx-ll__popover-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sfx-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sfx-ll__popover-close {
+  background: transparent;
+  border: none;
+  color: var(--sfx-text-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sfx-ll__popover-close:hover {
+  color: var(--sfx-text);
+}
+
+.sfx-ll__color-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.sfx-ll__color-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  border-radius: 5px;
+  padding: 4px 8px;
+}
+
+.sfx-ll__row-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sfx-ll__color-picker-wrap {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--sfx-border-strong);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sfx-ll__color-picker-wrap input[type="color"] {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sfx-ll__color-label {
+  font-size: 11px;
+  color: var(--sfx-text);
+  font-weight: 500;
+}
+
+.sfx-ll__hex-input {
+  width: 68px;
+  height: 20px;
+  background: var(--sfx-surface-raised);
+  border: 1px solid #323544;
+  border-radius: 3px;
+  color: var(--sfx-text);
+  font-size: 10px;
+  font-family: monospace;
+  padding: 0 4px;
+  text-transform: uppercase;
+}
+
+.sfx-ll__hex-input:focus {
+  border-color: var(--sfx-accent);
+  outline: none;
+}
+
+.sfx-ll__popover-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--sfx-border);
+  padding-top: 8px;
+}
+
+.sfx-ll__btn-subtle {
+  background: transparent;
+  border: none;
+  color: var(--sfx-text-muted);
+  font-size: 10px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.sfx-ll__btn-subtle:hover {
+  background: var(--sfx-surface-raised);
+  color: var(--sfx-text);
+}
+
+.sfx-ll__btn-done {
+  background: var(--sfx-accent);
+  border: none;
+  color: var(--sfx-text);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.sfx-ll__btn-done:hover {
+  background: var(--sfx-accent-hover);
+}
+
+/* ── Toast Notification ── */
+.sfx-ll__toast {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(24, 25, 32, 0.95);
+  border: 1px solid var(--sfx-border-strong);
+  color: var(--sfx-text);
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 1001;
+}
+
+.sfx-ll__toast.is-visible {
+  opacity: 1;
+}

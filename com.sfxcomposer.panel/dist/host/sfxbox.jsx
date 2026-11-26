@@ -1330,6 +1330,324 @@ SFXBox.premiere = (function () {
       reason: clips.length ? '' : 'No audio clips are selected in the active sequence.' };
   };
 
+  /* ---- SFX Timeline Preset Manager (Capture & Restore) ---- */
+
+  api.getSfxArrangement = function (params) {
+    var seq = activeSequence();
+    if (!seq) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a sequence in Premiere Pro before capturing an SFX preset.');
+    }
+    params = params || {};
+    var onlySelected = !!params.onlySelected;
+    var rawClips = [];
+
+    function isAudioPath(p) {
+      if (!p) return false;
+      var ext = SFXBox.u.extensionOf(p).toLowerCase();
+      return ext === 'wav' || ext === 'mp3' || ext === 'aif' || ext === 'aiff' || ext === 'ogg' || ext === 'flac' || ext === 'm4a' || ext === 'aac' || ext === 'wma';
+    }
+
+    if (onlySelected && typeof seq.getSelection === 'function') {
+      try {
+        var selRes = api.selectedAudioClips();
+        if (selRes && selRes.clips && selRes.clips.length > 0) {
+          rawClips = selRes.clips;
+        }
+      } catch (eSel) {}
+    }
+
+    if (rawClips.length === 0) {
+      var aCount = seq.audioTracks ? seq.audioTracks.numTracks : 0;
+      var t;
+      for (t = 0; t < aCount; t += 1) {
+        var track = seq.audioTracks[t];
+        if (!track || !track.clips) continue;
+        var cCount = track.clips.numItems;
+        var c;
+        for (c = 0; c < cCount; c += 1) {
+          try {
+            var clip = track.clips[c];
+            if (!clip) continue;
+            var isAudio = false;
+            try { isAudio = clip.mediaType === 'Audio' || Number(clip.type) === 2; } catch (eType) {}
+            var mediaPath = '';
+            try {
+              if (clip.projectItem && clip.projectItem.getMediaPath) {
+                mediaPath = String(clip.projectItem.getMediaPath() || '');
+              }
+            } catch (ePath) {}
+            if (!isAudio && !isAudioPath(mediaPath)) continue;
+
+            var sourceIn = 0;
+            var sourceOut = 0;
+            try {
+              if (clip.inPoint !== undefined && clip.inPoint !== null) sourceIn = seconds(clip.inPoint);
+              else if (typeof clip.getInPoint === 'function') sourceIn = seconds(clip.getInPoint());
+            } catch (eIn) {}
+            try {
+              if (clip.outPoint !== undefined && clip.outPoint !== null) sourceOut = seconds(clip.outPoint);
+              else if (typeof clip.getOutPoint === 'function') sourceOut = seconds(clip.getOutPoint());
+            } catch (eOut) {}
+
+            var tlStart = seconds(clip.start);
+            var tlEnd = seconds(clip.end);
+            var tlDuration = Math.max(0, tlEnd - tlStart);
+            if (sourceOut <= sourceIn) sourceOut = sourceIn + tlDuration;
+
+            var playbackSpeed = 1;
+            try { if (typeof clip.getSpeed === 'function') playbackSpeed = Number(clip.getSpeed()) || 1; } catch (eSpeed) {}
+
+            var gainDb = 0;
+            try {
+              if (clip.components) {
+                var compIdx, propIdx;
+                for (compIdx = 0; compIdx < clip.components.numItems; compIdx += 1) {
+                  var comp = clip.components[compIdx];
+                  if (comp && String(comp.displayName) === 'Volume') {
+                    for (propIdx = 0; propIdx < comp.properties.numItems; propIdx += 1) {
+                      var prop = comp.properties[propIdx];
+                      if (prop && String(prop.displayName) === 'Level') {
+                        var val = prop.getValue();
+                        if (val !== undefined && val !== null) {
+                          gainDb = Number(val) || 0;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            } catch (eGain) {}
+
+            rawClips.push({
+              name: String(clip.name || 'SFX Clip'),
+              trackIndex: t,
+              trackNumber: t + 1,
+              trackName: String(track.name || ('Audio ' + (t + 1))),
+              clipIndex: c,
+              timelineStart: tlStart,
+              timelineEnd: tlEnd,
+              duration: tlDuration,
+              sourceIn: sourceIn,
+              sourceOut: sourceOut,
+              sourceMediaPath: mediaPath,
+              playbackSpeed: playbackSpeed,
+              gainDb: gainDb,
+              nodeId: String(clip.nodeId || '')
+            });
+          } catch (eC) {}
+        }
+      }
+    }
+
+    if (rawClips.length === 0) {
+      return SFXBox.fail('host/no-sfx-found', 'No audio clips found on the active timeline to capture as a preset.');
+    }
+
+    rawClips.sort(function (a, b) { return a.timelineStart - b.timelineStart; });
+
+    var minStart = rawClips[0].timelineStart;
+    var maxEnd = rawClips[0].timelineEnd;
+    var tracksUsedMap = {};
+    var tracksList = [];
+    var i;
+
+    for (i = 0; i < rawClips.length; i += 1) {
+      var item = rawClips[i];
+      if (item.timelineStart < minStart) minStart = item.timelineStart;
+      if (item.timelineEnd > maxEnd) maxEnd = item.timelineEnd;
+      if (!tracksUsedMap[item.trackNumber]) {
+        tracksUsedMap[item.trackNumber] = {
+          trackNumber: item.trackNumber,
+          trackIndex: item.trackIndex,
+          name: item.trackName,
+          clipCount: 0
+        };
+        tracksList.push(tracksUsedMap[item.trackNumber]);
+      }
+      tracksUsedMap[item.trackNumber].clipCount += 1;
+    }
+
+    var normalizedClips = [];
+    for (i = 0; i < rawClips.length; i += 1) {
+      var cItem = rawClips[i];
+      normalizedClips.push({
+        id: 'clip_' + (i + 1),
+        name: cItem.name,
+        trackIndex: cItem.trackIndex,
+        trackNumber: cItem.trackNumber,
+        trackName: cItem.trackName,
+        timelineStart: cItem.timelineStart,
+        timelineEnd: cItem.timelineEnd,
+        relativeStartSeconds: Math.max(0, cItem.timelineStart - minStart),
+        durationSeconds: cItem.duration,
+        sourceIn: cItem.sourceIn,
+        sourceOut: cItem.sourceOut,
+        sourceMediaPath: cItem.sourceMediaPath,
+        playbackSpeed: cItem.playbackSpeed || 1,
+        gainDb: cItem.gainDb || 0,
+        nodeId: cItem.nodeId
+      });
+    }
+
+    return {
+      ok: true,
+      host: 'premiere',
+      sequenceName: String(seq.name),
+      playheadSeconds: playheadSeconds(seq),
+      frameRate: sequenceFrameRate(seq),
+      summary: {
+        clipCount: normalizedClips.length,
+        trackCount: tracksList.length,
+        durationSeconds: Math.max(0, maxEnd - minStart),
+        minStartSeconds: minStart,
+        maxEndSeconds: maxEnd
+      },
+      tracks: tracksList,
+      clips: normalizedClips
+    };
+  };
+
+  api.restoreSfxArrangement = function (params) {
+    var seq = activeSequence();
+    if (!seq) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a sequence in Premiere Pro before restoring an SFX preset.');
+    }
+    params = params || {};
+    var clips = params.clips || [];
+    if (!clips.length) {
+      return SFXBox.fail('host/empty-preset', 'Preset contains no audio clips to restore.');
+    }
+
+    var mode = params.mode || 'playhead';
+    var anchor = 0;
+    if (mode === 'playhead') {
+      anchor = (params.playheadSeconds !== undefined && params.playheadSeconds !== null)
+        ? Number(params.playheadSeconds)
+        : playheadSeconds(seq);
+    } else {
+      anchor = (params.minStartSeconds !== undefined && params.minStartSeconds !== null)
+        ? Number(params.minStartSeconds)
+        : 0;
+    }
+
+    var placedCount = 0;
+    var failedCount = 0;
+    var results = [];
+    var i;
+
+    for (i = 0; i < clips.length; i += 1) {
+      var clip = clips[i];
+      var targetStart = anchor + Number(clip.relativeStartSeconds || 0);
+      var res = api.importSfx({
+        path: clip.mediaPath,
+        startSeconds: targetStart,
+        trackNumber: clip.trackNumber || (clip.trackIndex !== undefined ? clip.trackIndex + 1 : 1),
+        trim: (clip.sourceOut > clip.sourceIn) ? { inSeconds: clip.sourceIn, outSeconds: clip.sourceOut } : null,
+        gainDb: Number(clip.gainDb) || 0,
+        snapToFrame: true,
+        preventDuplicate: false
+      });
+
+      if (SFXBox.isFailure(res)) {
+        failedCount += 1;
+        results.push({ name: clip.name, placed: false, error: res.message || 'Import failed' });
+      } else {
+        placedCount += 1;
+        results.push({ name: clip.name, placed: true, startSeconds: targetStart, laneIndex: res.laneIndex });
+      }
+    }
+
+    return {
+      ok: placedCount > 0,
+      host: 'premiere',
+      mode: mode,
+      anchorSeconds: anchor,
+      totalClips: clips.length,
+      placedCount: placedCount,
+      failedCount: failedCount,
+      results: results
+    };
+  };
+
+  /* ---- Timeline Layer Color Labels ---- */
+
+  api.getSelectedTimelineLabel = function () {
+    var seq = activeSequence();
+    if (!seq) return { ok: false, count: 0, labelIndex: -1, reason: 'No active sequence' };
+    var sel;
+    try { sel = seq.getSelection(); } catch (e) { return { ok: false, count: 0, labelIndex: -1, reason: e.message }; }
+    var count = sel ? (sel.numItems !== undefined ? sel.numItems : sel.length) : 0;
+    if (count === 0) return { ok: true, host: 'premiere', count: 0, labelIndex: -1 };
+    var first = sel[0];
+    var labelIdx = -1;
+    try {
+      if (first && typeof first.getColorLabel === 'function') {
+        labelIdx = Number(first.getColorLabel());
+      } else if (first && first.projectItem && typeof first.projectItem.getColorLabel === 'function') {
+        labelIdx = Number(first.projectItem.getColorLabel());
+      }
+    } catch (e2) {}
+    return { ok: true, host: 'premiere', count: count, labelIndex: labelIdx };
+  };
+
+  api.setTimelineLabelColor = function (params) {
+    var seq = activeSequence();
+    if (!seq) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a sequence in Premiere Pro before applying label color.');
+    }
+    params = params || {};
+    var PREMIERE_COLOR_MAP = {
+      'red': 6,
+      'yellow': 15,
+      'green': 13,
+      'blue': 9,
+      'purple': 8,
+      'orange': 7,
+      'neutral': 12,
+      'gray': 12
+    };
+
+    var targetIdx = 0;
+    if (params.colorKey && PREMIERE_COLOR_MAP[String(params.colorKey).toLowerCase()] !== undefined) {
+      targetIdx = PREMIERE_COLOR_MAP[String(params.colorKey).toLowerCase()];
+    } else if (params.colorIndex !== undefined && params.colorIndex !== null) {
+      targetIdx = Number(params.colorIndex);
+    } else if (params.premiereIndex !== undefined && params.premiereIndex !== null) {
+      targetIdx = Number(params.premiereIndex);
+    }
+
+    var sel;
+    try { sel = seq.getSelection(); } catch (e) {
+      return SFXBox.fail('host/selection-error', 'Could not read timeline selection.');
+    }
+    var count = sel ? (sel.numItems !== undefined ? sel.numItems : sel.length) : 0;
+    if (count === 0) {
+      return SFXBox.fail('host/no-selection', 'No clip or layer is selected on the active timeline.');
+    }
+
+    var updated = 0;
+    for (var i = 0; i < count; i += 1) {
+      var item = sel[i];
+      if (!item) continue;
+      try {
+        if (typeof item.setColorLabel === 'function') {
+          item.setColorLabel(targetIdx);
+          updated += 1;
+        } else if (item.projectItem && typeof item.projectItem.setColorLabel === 'function') {
+          item.projectItem.setColorLabel(targetIdx);
+          updated += 1;
+        }
+      } catch (eC) {}
+    }
+
+    return {
+      ok: updated > 0,
+      host: 'premiere',
+      updatedCount: updated,
+      colorIndex: targetIdx
+    };
+  };
+
   /**
    * Ceiling on how many project items are walked.
    *
@@ -3199,6 +3517,238 @@ SFXBox.aftereffects = (function () {
     }
   };
 
+  /* ---- SFX Timeline Preset Manager (Capture & Restore) ---- */
+
+  api.getSfxArrangement = function (params) {
+    var comp = activeComp();
+    if (!comp) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a composition in After Effects before capturing an SFX preset.');
+    }
+    var rawClips = [];
+    var i;
+    for (i = 1; i <= comp.numLayers; i += 1) {
+      var layer = comp.layer(i);
+      if (!layer || !layer.hasAudio) continue;
+      if (layer.hasVideo && layer.source && !layer.audioOnly) {
+        continue;
+      }
+      var mediaPath = '';
+      try {
+        if (layer.source && layer.source.file) {
+          mediaPath = String(layer.source.file.fsName || '');
+        }
+      } catch (eP) {}
+
+      var inP = Number(layer.inPoint);
+      var outP = Number(layer.outPoint);
+      var dur = Math.max(0, outP - inP);
+      rawClips.push({
+        name: String(layer.name || 'SFX Layer'),
+        trackIndex: Number(layer.index) - 1,
+        trackNumber: Number(layer.index),
+        trackName: 'Layer ' + layer.index,
+        timelineStart: inP,
+        timelineEnd: outP,
+        duration: dur,
+        sourceIn: 0,
+        sourceOut: dur,
+        sourceMediaPath: mediaPath,
+        playbackSpeed: 1,
+        gainDb: 0,
+        nodeId: String(layer.index)
+      });
+    }
+
+    if (rawClips.length === 0) {
+      return SFXBox.fail('host/no-sfx-found', 'No audio layers found in the active composition.');
+    }
+
+    rawClips.sort(function (a, b) { return a.timelineStart - b.timelineStart; });
+    var minStart = rawClips[0].timelineStart;
+    var maxEnd = rawClips[0].timelineEnd;
+    var tracksUsedMap = {};
+    var tracksList = [];
+
+    for (i = 0; i < rawClips.length; i += 1) {
+      var item = rawClips[i];
+      if (item.timelineStart < minStart) minStart = item.timelineStart;
+      if (item.timelineEnd > maxEnd) maxEnd = item.timelineEnd;
+      if (!tracksUsedMap[item.trackNumber]) {
+        tracksUsedMap[item.trackNumber] = {
+          trackNumber: item.trackNumber,
+          trackIndex: item.trackIndex,
+          name: item.trackName,
+          clipCount: 0
+        };
+        tracksList.push(tracksUsedMap[item.trackNumber]);
+      }
+      tracksUsedMap[item.trackNumber].clipCount += 1;
+    }
+
+    var normalizedClips = [];
+    for (i = 0; i < rawClips.length; i += 1) {
+      var cItem = rawClips[i];
+      normalizedClips.push({
+        id: 'clip_' + (i + 1),
+        name: cItem.name,
+        trackIndex: cItem.trackIndex,
+        trackNumber: cItem.trackNumber,
+        trackName: cItem.trackName,
+        timelineStart: cItem.timelineStart,
+        timelineEnd: cItem.timelineEnd,
+        relativeStartSeconds: Math.max(0, cItem.timelineStart - minStart),
+        durationSeconds: cItem.duration,
+        sourceIn: cItem.sourceIn,
+        sourceOut: cItem.sourceOut,
+        sourceMediaPath: cItem.sourceMediaPath,
+        playbackSpeed: cItem.playbackSpeed || 1,
+        gainDb: cItem.gainDb || 0,
+        nodeId: cItem.nodeId
+      });
+    }
+
+    return {
+      ok: true,
+      host: 'aftereffects',
+      sequenceName: String(comp.name),
+      playheadSeconds: Number(comp.time),
+      frameRate: Number(comp.frameRate),
+      summary: {
+        clipCount: normalizedClips.length,
+        trackCount: tracksList.length,
+        durationSeconds: Math.max(0, maxEnd - minStart),
+        minStartSeconds: minStart,
+        maxEndSeconds: maxEnd
+      },
+      tracks: tracksList,
+      clips: normalizedClips
+    };
+  };
+
+  api.restoreSfxArrangement = function (params) {
+    var comp = activeComp();
+    if (!comp) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a composition in After Effects before restoring an SFX preset.');
+    }
+    params = params || {};
+    var clips = params.clips || [];
+    if (!clips.length) {
+      return SFXBox.fail('host/empty-preset', 'Preset contains no audio clips to restore.');
+    }
+
+    var mode = params.mode || 'playhead';
+    var anchor = 0;
+    if (mode === 'playhead') {
+      anchor = (params.playheadSeconds !== undefined && params.playheadSeconds !== null)
+        ? Number(params.playheadSeconds)
+        : Number(comp.time);
+    } else {
+      anchor = (params.minStartSeconds !== undefined && params.minStartSeconds !== null)
+        ? Number(params.minStartSeconds)
+        : 0;
+    }
+
+    var placedCount = 0;
+    var failedCount = 0;
+    var results = [];
+    var i;
+
+    for (i = 0; i < clips.length; i += 1) {
+      var clip = clips[i];
+      var targetStart = anchor + Number(clip.relativeStartSeconds || 0);
+      var res = api.importSfx({
+        path: clip.mediaPath,
+        startSeconds: targetStart,
+        trackNumber: clip.trackNumber || (clip.trackIndex !== undefined ? clip.trackIndex + 1 : 1),
+        gainDb: Number(clip.gainDb) || 0,
+        snapToFrame: true,
+        preventDuplicate: false
+      });
+
+      if (SFXBox.isFailure(res)) {
+        failedCount += 1;
+        results.push({ name: clip.name, placed: false, error: res.message || 'Import failed' });
+      } else {
+        placedCount += 1;
+        results.push({ name: clip.name, placed: true, startSeconds: targetStart, laneIndex: res.laneIndex });
+      }
+    }
+
+    return {
+      ok: placedCount > 0,
+      host: 'aftereffects',
+      mode: mode,
+      anchorSeconds: anchor,
+      totalClips: clips.length,
+      placedCount: placedCount,
+      failedCount: failedCount,
+      results: results
+    };
+  };
+
+  /* ---- Timeline Layer Color Labels ---- */
+
+  api.getSelectedTimelineLabel = function () {
+    var comp = activeComp();
+    if (!comp) return { ok: false, count: 0, labelIndex: -1, reason: 'No active composition' };
+    var sel = comp.selectedLayers || [];
+    if (sel.length === 0) return { ok: true, host: 'aftereffects', count: 0, labelIndex: -1 };
+    var first = sel[0];
+    return { ok: true, host: 'aftereffects', count: sel.length, labelIndex: Number(first.label) };
+  };
+
+  api.setTimelineLabelColor = function (params) {
+    var comp = activeComp();
+    if (!comp) {
+      return SFXBox.fail('host/no-active-timeline', 'Open a composition in After Effects before applying label color.');
+    }
+    params = params || {};
+    var AE_COLOR_MAP = {
+      'red': 1,
+      'yellow': 2,
+      'green': 9,
+      'blue': 8,
+      'purple': 10,
+      'orange': 11,
+      'neutral': 0,
+      'gray': 0
+    };
+
+    var targetIdx = 0;
+    if (params.colorKey && AE_COLOR_MAP[String(params.colorKey).toLowerCase()] !== undefined) {
+      targetIdx = AE_COLOR_MAP[String(params.colorKey).toLowerCase()];
+    } else if (params.colorIndex !== undefined && params.colorIndex !== null) {
+      targetIdx = Number(params.colorIndex);
+    } else if (params.aeIndex !== undefined && params.aeIndex !== null) {
+      targetIdx = Number(params.aeIndex);
+    }
+
+    var sel = comp.selectedLayers || [];
+    if (sel.length === 0) {
+      return SFXBox.fail('host/no-selection', 'No layer is selected in the active composition.');
+    }
+
+    var updated = 0;
+    app.beginUndoGroup('Change Layer Label Color');
+    try {
+      for (var i = 0; i < sel.length; i += 1) {
+        var layer = sel[i];
+        if (!layer) continue;
+        layer.label = targetIdx;
+        updated += 1;
+      }
+    } finally {
+      app.endUndoGroup();
+    }
+
+    return {
+      ok: updated > 0,
+      host: 'aftereffects',
+      updatedCount: updated,
+      colorIndex: targetIdx
+    };
+  };
+
   return api;
 })();
 
@@ -3438,6 +3988,38 @@ SFXBox.commands = {
       return SFXBox.fail('host/unsupported-here', 'Audio-clip selection is available in Premiere Pro only.');
     }
     return adapter.selectedAudioClips();
+  },
+
+  'timeline.getSfxArrangement': function (params) {
+    var adapter = SFXBox.adapter();
+    if (typeof adapter.getSfxArrangement !== 'function') {
+      return SFXBox.fail('host/unsupported-here', 'SFX arrangement capture is not supported in this host.');
+    }
+    return adapter.getSfxArrangement(params);
+  },
+
+  'timeline.restoreSfxArrangement': function (params) {
+    var adapter = SFXBox.adapter();
+    if (typeof adapter.restoreSfxArrangement !== 'function') {
+      return SFXBox.fail('host/unsupported-here', 'SFX arrangement restoration is not supported in this host.');
+    }
+    return adapter.restoreSfxArrangement(params);
+  },
+
+  'timeline.setLabelColor': function (params) {
+    var adapter = SFXBox.adapter();
+    if (typeof adapter.setTimelineLabelColor !== 'function') {
+      return SFXBox.fail('host/unsupported-here', 'Timeline label color is not supported in this host.');
+    }
+    return adapter.setTimelineLabelColor(params);
+  },
+
+  'timeline.getLabelColor': function () {
+    var adapter = SFXBox.adapter();
+    if (typeof adapter.getSelectedTimelineLabel !== 'function') {
+      return { ok: false, labelIndex: -1 };
+    }
+    return adapter.getSelectedTimelineLabel();
   },
 
   'timeline.createAudioTrack': function (params) {

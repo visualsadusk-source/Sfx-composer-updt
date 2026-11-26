@@ -12,7 +12,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.88);
+  background: var(--sfx-modal-backdrop);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 20px;
@@ -26,7 +26,7 @@
 
 /* Mandatory First-Launch Gate Mode */
 #sfx-license-overlay.is-gate {
-  background: #08080b;
+  background: var(--sfx-surface);
   display: flex !important;
   pointer-events: auto !important;
 }
@@ -58,10 +58,10 @@ body.sfx-gated #root {
   width: 100%;
   max-width: 440px;
   background: #0e0e11;
-  border: 1px solid #232328;
+  border: 1px solid var(--sfx-border);
   border-radius: 12px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.04);
-  color: #e8e8ec;
+  color: var(--sfx-text);
   font: 13px/1.45 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   overflow: hidden;
   animation: sfxLicSlideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1);
@@ -87,7 +87,7 @@ body.sfx-gated #root {
   border-radius: 6px;
   border: none;
   background: transparent;
-  color: #8c8c94;
+  color: var(--sfx-text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@ body.sfx-gated #root {
 
 .sfx-lic__close-btn:hover {
   background: #1c1c22;
-  color: #ffffff;
+  color: var(--sfx-text);
 }
 
 .sfx-lic__logo {
@@ -108,10 +108,10 @@ body.sfx-gated #root {
   height: 52px;
   border-radius: 12px;
   background: linear-gradient(135deg, #133256 0%, #0a1b2e 100%);
-  border: 1px solid rgba(10, 132, 255, 0.4);
-  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.25);
+  border: 1px solid var(--sfx-accent-35);
+  box-shadow: 0 8px 24px var(--sfx-accent-20);
   margin-bottom: 14px;
-  color: #0a84ff;
+  color: var(--sfx-accent);
 }
 
 .sfx-lic__logo svg {
@@ -124,13 +124,13 @@ body.sfx-gated #root {
   font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: #ffffff;
+  color: var(--sfx-text);
 }
 
 .sfx-lic__subtitle {
   margin: 0;
   font-size: 12px;
-  color: #8c8c96;
+  color: var(--sfx-text-muted);
 }
 
 /* ── Card Body ── */
@@ -160,25 +160,25 @@ body.sfx-gated #root {
 .sfx-lic__banner--error {
   background: rgba(255, 69, 58, 0.12);
   border: 1px solid rgba(255, 69, 58, 0.35);
-  color: #ff6b6b;
+  color: var(--sfx-critical);
 }
 
 .sfx-lic__banner--success {
   background: rgba(48, 209, 88, 0.12);
   border: 1px solid rgba(48, 209, 88, 0.35);
-  color: #30d158;
+  color: var(--sfx-positive);
 }
 
 .sfx-lic__banner--warning {
   background: rgba(255, 214, 10, 0.12);
   border: 1px solid rgba(255, 214, 10, 0.35);
-  color: #ffd60a;
+  color: var(--sfx-caution);
 }
 
 .sfx-lic__banner--info {
-  background: rgba(10, 132, 255, 0.12);
-  border: 1px solid rgba(10, 132, 255, 0.35);
-  color: #7ec8ff;
+  background: var(--sfx-accent-12);
+  border: 1px solid var(--sfx-accent-35);
+  color: var(--sfx-accent);
 }
 
 .sfx-lic__banner-icon {
@@ -209,7 +209,7 @@ body.sfx-gated #root {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #9c9ca6;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-lic__input-wrap {
@@ -222,10 +222,10 @@ body.sfx-gated #root {
   width: 100%;
   height: 38px;
   padding: 0 12px;
-  background: #070709;
-  border: 1px solid #232328;
+  background: var(--sfx-surface-sunken);
+  border: 1px solid var(--sfx-border);
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--sfx-text);
   font: 13px/1 inherit;
   outline: none;
   box-sizing: border-box;
@@ -233,13 +233,13 @@ body.sfx-gated #root {
 }
 
 .sfx-lic__input:focus {
-  border-color: #0a84ff;
+  border-color: var(--sfx-accent);
   box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
   background: #09090c;
 }
 
 .sfx-lic__input::placeholder {
-  color: #55555e;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-lic__input--key {
@@ -257,7 +257,7 @@ body.sfx-gated #root {
   border-radius: 6px;
   border: none;
   background: transparent;
-  color: #72727a;
+  color: var(--sfx-text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -265,7 +265,7 @@ body.sfx-gated #root {
 }
 
 .sfx-lic__eye-btn:hover {
-  color: #e8e8ec;
+  color: var(--sfx-text);
 }
 
 .sfx-lic__eye-btn svg {
@@ -291,14 +291,14 @@ body.sfx-gated #root {
 }
 
 .sfx-lic__btn--primary {
-  background: #0a84ff;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.35);
+  background: var(--sfx-accent);
+  color: var(--sfx-text-on-accent);
+  box-shadow: 0 4px 14px var(--sfx-accent-35);
 }
 
 .sfx-lic__btn--primary:hover:not(:disabled) {
-  background: #0071e3;
-  box-shadow: 0 6px 18px rgba(10, 132, 255, 0.45);
+  background: var(--sfx-accent-hover);
+  box-shadow: 0 6px 18px var(--sfx-accent-35);
 }
 
 .sfx-lic__btn--primary:active:not(:disabled) {
@@ -311,35 +311,35 @@ body.sfx-gated #root {
 }
 
 .sfx-lic__btn--secondary {
-  background: #18181c;
-  border-color: #2e2e34;
-  color: #c8c8d0;
+  background: var(--sfx-surface-raised);
+  border-color: var(--sfx-border);
+  color: var(--sfx-text-secondary);
 }
 
 .sfx-lic__btn--secondary:hover:not(:disabled) {
-  background: #202026;
-  border-color: #3e3e46;
-  color: #ffffff;
+  background: var(--sfx-surface-raised);
+  border-color: var(--sfx-border-strong);
+  color: var(--sfx-text);
 }
 
 .sfx-lic__btn--danger {
   background: rgba(255, 69, 58, 0.15);
   border-color: rgba(255, 69, 58, 0.35);
-  color: #ff6b6b;
+  color: var(--sfx-critical);
 }
 
 .sfx-lic__btn--danger:hover:not(:disabled) {
   background: rgba(255, 69, 58, 0.25);
   border-color: rgba(255, 69, 58, 0.5);
-  color: #ffffff;
+  color: var(--sfx-text);
 }
 
 /* Spinner */
 .sfx-lic__spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border: 2px solid var(--sfx-border-strong);
+  border-top-color: var(--sfx-text);
   border-radius: 50%;
   animation: sfxLicSpin 0.7s linear infinite;
   display: inline-block;
@@ -353,7 +353,7 @@ body.sfx-gated #root {
 .sfx-lic__footer {
   padding: 14px 24px 20px;
   border-top: 1px solid #1a1a1f;
-  background: #09090b;
+  background: var(--sfx-surface);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -361,7 +361,7 @@ body.sfx-gated #root {
 }
 
 .sfx-lic__link {
-  color: #0a84ff;
+  color: var(--sfx-accent);
   text-decoration: none;
   transition: color 0.15s ease;
   cursor: pointer;
@@ -374,14 +374,14 @@ body.sfx-gated #root {
 
 /* ── Settings → License & Activation Section ── */
 .sfx-license-section {
-  border-top: 1px solid #232328;
+  border-top: 1px solid var(--sfx-border);
   padding-top: 18px;
   margin-top: 18px;
 }
 
 .sfx-license-card {
-  background: #101014;
-  border: 1px solid #232328;
+  background: var(--sfx-surface-sunken);
+  border: 1px solid var(--sfx-border);
   border-radius: 8px;
   padding: 16px;
   display: flex;
@@ -397,11 +397,11 @@ body.sfx-gated #root {
 }
 
 .sfx-license-label {
-  color: #8c8c96;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-license-val {
-  color: #ffffff;
+  color: var(--sfx-text);
   font-weight: 500;
 }
 
@@ -417,12 +417,12 @@ body.sfx-gated #root {
 
 .sfx-license-badge--active {
   background: rgba(48, 209, 88, 0.15);
-  color: #30d158;
+  color: var(--sfx-positive);
   border: 1px solid rgba(48, 209, 88, 0.35);
 }
 
 .sfx-license-badge--inactive {
   background: rgba(255, 69, 58, 0.15);
-  color: #ff6b6b;
+  color: var(--sfx-critical);
   border: 1px solid rgba(255, 69, 58, 0.35);
 }

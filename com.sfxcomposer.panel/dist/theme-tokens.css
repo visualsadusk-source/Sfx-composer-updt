@@ -1,0 +1,229 @@
+/* ==========================================================================
+   SFX COMPOSER — CENTRALIZED DESIGN TOKEN & SF PRO TYPOGRAPHY SYSTEM
+   Master Source of Truth: Browser & SFX Library UI Architecture
+   Supports Themes: Studio Dark (default), Ultra Dark (ultra-dark), Light (light)
+   Supports Accents: Blue, Purple, Pink, Orange, Green, Graphite
+   ========================================================================== */
+
+:root {
+  /* ── Core Surface Tokens (Studio Dark Default) ── */
+  --sfx-surface: #000000;
+  --sfx-surface-raised: #121214;
+  --sfx-surface-sunken: #000000;
+  --sfx-surface-hover: #1a1a1d;
+  --sfx-surface-selected: #1f1f23;
+  --sfx-bg: var(--sfx-surface);
+
+  /* ── Borders & Dividers ── */
+  --sfx-border: #232326;
+  --sfx-border-strong: #6e6e75;
+  --sfx-divider: rgba(255, 255, 255, 0.08);
+
+  /* ── Typography & Text (SF Pro Display + SF Pro Text Stack) ── */
+  --sfx-font: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --sfx-font-display: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --sfx-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sfx-font-size: 13px;
+  --sfx-font-size-small: 11px;
+  --sfx-font-size-large: 16px;
+
+  --sfx-text: #f5f5f7;
+  --sfx-text-secondary: #c7c7ce;
+  --sfx-text-muted: #9c9ca4;
+  --sfx-text-on-accent: #ffffff;
+
+  /* ── Accent Tokens (Electric Blue Default, overridden dynamically by Settings) ── */
+  --sfx-accent: #0a84ff;
+  --sfx-accent-hover: #3d9bff;
+  --sfx-accent-active: #0870d8;
+  --sfx-accent-08: rgba(10, 132, 255, 0.08);
+  --sfx-accent-12: rgba(10, 132, 255, 0.12);
+  --sfx-accent-15: rgba(10, 132, 255, 0.15);
+  --sfx-accent-20: rgba(10, 132, 255, 0.20);
+  --sfx-accent-25: rgba(10, 132, 255, 0.25);
+  --sfx-accent-35: rgba(10, 132, 255, 0.35);
+  --sfx-accent-45: rgba(10, 132, 255, 0.45);
+
+  /* ── Semantic Status & Data Tokens ── */
+  --sfx-positive: #30d158;
+  --sfx-positive-12: rgba(48, 209, 88, 0.12);
+  --sfx-positive-25: rgba(48, 209, 88, 0.25);
+  --sfx-caution: #ffd60a;
+  --sfx-caution-12: rgba(255, 214, 10, 0.12);
+  --sfx-caution-25: rgba(255, 214, 10, 0.25);
+  --sfx-critical: #ff453a;
+  --sfx-critical-12: rgba(255, 69, 58, 0.12);
+  --sfx-critical-25: rgba(255, 69, 58, 0.25);
+  --sfx-waveform: #8a9bb5;
+  --sfx-waveform-played: #0a84ff;
+  --sfx-favourite: #ffd60a;
+
+  /* ── Semantic Component Aliases ── */
+  --sfx-btn-secondary-bg: rgba(255, 255, 255, 0.06);
+  --sfx-btn-secondary-hover: rgba(255, 255, 255, 0.11);
+  --sfx-subtle-bg: rgba(255, 255, 255, 0.04);
+  --sfx-badge-bg: rgba(255, 255, 255, 0.07);
+  --sfx-glass-bg: rgba(18, 18, 20, 0.95);
+  --sfx-modal-backdrop: rgba(0, 0, 0, 0.72);
+  --sfx-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --sfx-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.55);
+  --sfx-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.70);
+  --sfx-scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --sfx-scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+
+  /* ── Spacing, Radii & Sizing ── */
+  --sfx-space1: 4px;
+  --sfx-space2: 8px;
+  --sfx-space3: 12px;
+  --sfx-space4: 18px;
+  --sfx-space5: 28px;
+  --sfx-radius: 7px;
+  --sfx-radius-large: 12px;
+  --sfx-row-height: 34px;
+  --sfx-control-height: 30px;
+}
+
+/* ── Ultra Dark Theme Derived Overrides ── */
+html[data-sfx-theme="ultra-dark"] {
+  --sfx-text-secondary: #b8b8c0;
+  --sfx-glass-bg: rgba(7, 7, 8, 0.96);
+}
+
+/* ── Light / White Theme Derived Overrides ── */
+html[data-sfx-theme="light"] {
+  --sfx-text-secondary: #383842;
+  --sfx-divider: rgba(0, 0, 0, 0.08);
+  --sfx-subtle-bg: rgba(0, 0, 0, 0.035);
+  --sfx-badge-bg: rgba(0, 0, 0, 0.06);
+  --sfx-btn-secondary-bg: rgba(0, 0, 0, 0.055);
+  --sfx-btn-secondary-hover: rgba(0, 0, 0, 0.10);
+  --sfx-glass-bg: rgba(255, 255, 255, 0.95);
+  --sfx-modal-backdrop: rgba(0, 0, 0, 0.42);
+  --sfx-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --sfx-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --sfx-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.16);
+  --sfx-scrollbar-thumb: rgba(0, 0, 0, 0.18);
+  --sfx-scrollbar-thumb-hover: rgba(0, 0, 0, 0.30);
+}
+
+/* ── Accent Alpha Tint Overrides ── */
+html[data-sfx-accent="purple"] {
+  --sfx-accent-08: rgba(191, 90, 242, 0.08);
+  --sfx-accent-12: rgba(191, 90, 242, 0.12);
+  --sfx-accent-15: rgba(191, 90, 242, 0.15);
+  --sfx-accent-20: rgba(191, 90, 242, 0.20);
+  --sfx-accent-25: rgba(191, 90, 242, 0.25);
+  --sfx-accent-35: rgba(191, 90, 242, 0.35);
+  --sfx-accent-45: rgba(191, 90, 242, 0.45);
+}
+
+html[data-sfx-accent="pink"] {
+  --sfx-accent-08: rgba(255, 55, 95, 0.08);
+  --sfx-accent-12: rgba(255, 55, 95, 0.12);
+  --sfx-accent-15: rgba(255, 55, 95, 0.15);
+  --sfx-accent-20: rgba(255, 55, 95, 0.20);
+  --sfx-accent-25: rgba(255, 55, 95, 0.25);
+  --sfx-accent-35: rgba(255, 55, 95, 0.35);
+  --sfx-accent-45: rgba(255, 55, 95, 0.45);
+}
+
+html[data-sfx-accent="orange"] {
+  --sfx-accent-08: rgba(255, 159, 10, 0.08);
+  --sfx-accent-12: rgba(255, 159, 10, 0.12);
+  --sfx-accent-15: rgba(255, 159, 10, 0.15);
+  --sfx-accent-20: rgba(255, 159, 10, 0.20);
+  --sfx-accent-25: rgba(255, 159, 10, 0.25);
+  --sfx-accent-35: rgba(255, 159, 10, 0.35);
+  --sfx-accent-45: rgba(255, 159, 10, 0.45);
+}
+
+html[data-sfx-accent="green"] {
+  --sfx-accent-08: rgba(48, 209, 88, 0.08);
+  --sfx-accent-12: rgba(48, 209, 88, 0.12);
+  --sfx-accent-15: rgba(48, 209, 88, 0.15);
+  --sfx-accent-20: rgba(48, 209, 88, 0.20);
+  --sfx-accent-25: rgba(48, 209, 88, 0.25);
+  --sfx-accent-35: rgba(48, 209, 88, 0.35);
+  --sfx-accent-45: rgba(48, 209, 88, 0.45);
+}
+
+html[data-sfx-accent="graphite"] {
+  --sfx-accent-08: rgba(176, 176, 184, 0.08);
+  --sfx-accent-12: rgba(176, 176, 184, 0.12);
+  --sfx-accent-15: rgba(176, 176, 184, 0.15);
+  --sfx-accent-20: rgba(176, 176, 184, 0.20);
+  --sfx-accent-25: rgba(176, 176, 184, 0.25);
+  --sfx-accent-35: rgba(176, 176, 184, 0.35);
+  --sfx-accent-45: rgba(176, 176, 184, 0.45);
+}
+
+/* ==========================================================================
+   Global SF Pro Typography Standardization
+   ========================================================================== */
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--sfx-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4,
+.sfx-shell__title,
+.sfx-pm__title,
+.sfx-dl__title,
+.sfx-ai__title,
+.sfx-an__title,
+.sfx-au__title,
+.sfx-bf__title,
+.sfx-sc__title,
+.sfx-br__title,
+.sfx-buddy__title,
+.sfx-settings__heading,
+.sfx-section__title {
+  font-family: var(--sfx-font-display);
+  letter-spacing: -0.01em;
+}
+
+/* ── Global Native Form Control Theme Alignment ── */
+select,
+input,
+textarea {
+  color-scheme: dark;
+}
+
+html[data-sfx-theme="light"] select,
+html[data-sfx-theme="light"] input,
+html[data-sfx-theme="light"] textarea {
+  color-scheme: light;
+}
+
+/* ── Global Scrollbar Consistency ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sfx-scrollbar-thumb);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sfx-scrollbar-thumb-hover);
+}
+
+/* ── Global Focus & Accent Controls ── */
+:focus-visible {
+  outline: 2px solid var(--sfx-accent);
+  outline-offset: 1px;
+}
+
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--sfx-accent);
+}

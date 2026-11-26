@@ -29,13 +29,13 @@
   padding: 8px;
   border-radius: 6px;
   background: rgba(127, 29, 29, 0.35);
-  color: #fecaca;
+  color: var(--sfx-critical);
   font-size: 11px;
 }
 .sfx-es__status {
   margin-bottom: 8px;
   font-size: 11px;
-  color: #86efac;
+  color: var(--sfx-positive);
 }
 .sfx-es__muted {
   font-size: 11px;
@@ -52,22 +52,22 @@
   height: 24px;
   padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.14));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: transparent;
   color: inherit;
   font: 600 10px/1 inherit;
   cursor: pointer;
 }
 .sfx-es__cat.is-active {
-  background: #2563eb;
+  background: var(--sfx-accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--sfx-text-on-accent);
 }
 
 .sfx-es__sec {
   margin-bottom: 10px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--sfx-border);
 }
 .sfx-es__sec-title {
   font: 600 10px/1 inherit;
@@ -103,7 +103,7 @@
   height: 26px;
   padding: 0 10px;
   border-radius: 6px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.14));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: transparent;
   color: inherit;
   font: 600 10px/1 inherit;
@@ -111,14 +111,14 @@
   margin: 0 6px 6px 0;
 }
 .sfx-es__btn--primary {
-  background: #2563eb;
+  background: var(--sfx-accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--sfx-text-on-accent);
 }
 .sfx-es__btn--accent {
-  background: #7c3aed;
+  background: var(--sfx-accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--sfx-text);
 }
 .sfx-es__btn--small {
   height: 22px;
@@ -137,7 +137,7 @@
 }
 .sfx-es__tip {
   font-size: 11px;
-  color: #93c5fd;
+  color: var(--sfx-accent);
   margin-bottom: 2px;
 }
 .sfx-es__meta {

@@ -14,7 +14,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.82);
+  background: var(--sfx-modal-backdrop);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 20px;
@@ -41,10 +41,10 @@
   width: 100%;
   max-width: 460px;
   background: #0e0e12;
-  border: 1px solid #24242a;
+  border: 1px solid var(--sfx-border);
   border-radius: 12px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  color: #e4e4e7;
+  color: var(--sfx-text);
   font: 13px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   overflow: hidden;
   animation: sfxUpdateSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -67,12 +67,12 @@
   width: 40px;
   height: 40px;
   border-radius: 9px;
-  background: rgba(10, 132, 255, 0.12);
-  border: 1px solid rgba(10, 132, 255, 0.3);
+  background: var(--sfx-accent-12);
+  border: 1px solid var(--sfx-accent-35);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #38bdf8;
+  color: var(--sfx-accent);
   flex-shrink: 0;
 }
 .sfx-update-logo-box svg {
@@ -88,7 +88,7 @@
   margin: 0;
   font-size: 15px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--sfx-text);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -101,21 +101,21 @@
   border-radius: 999px;
   font-size: 10.5px;
   font-weight: 600;
-  background: rgba(10, 132, 255, 0.18);
-  border: 1px solid rgba(10, 132, 255, 0.4);
-  color: #38bdf8;
+  background: var(--sfx-accent-20);
+  border: 1px solid var(--sfx-accent-35);
+  color: var(--sfx-accent);
 }
 
 .sfx-update-subtitle {
   margin-top: 4px;
   font-size: 11.5px;
-  color: #94a3b8;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-update-close-btn {
   background: transparent;
   border: none;
-  color: #71717a;
+  color: var(--sfx-text-muted);
   width: 28px;
   height: 28px;
   border-radius: 6px;
@@ -126,8 +126,8 @@
   transition: all 0.15s ease;
 }
 .sfx-update-close-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #ffffff;
+  background: var(--sfx-btn-secondary-bg);
+  color: var(--sfx-text);
 }
 .sfx-update-close-btn svg {
   width: 16px;
@@ -150,7 +150,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  color: #94a3b8;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-update-notes-list {
@@ -160,7 +160,7 @@
   flex-direction: column;
   gap: 6px;
   font-size: 12px;
-  color: #cbd5e1;
+  color: var(--sfx-text-secondary);
 }
 
 .sfx-update-notes-list li {
@@ -169,7 +169,7 @@
 
 .sfx-update-meta-info {
   font-size: 11px;
-  color: #64748b;
+  color: var(--sfx-text-muted);
   display: flex;
   justify-content: space-between;
   margin-top: 4px;
@@ -201,13 +201,13 @@
 }
 
 .sfx-update-btn--primary {
-  background: #0a84ff;
-  color: #ffffff;
-  box-shadow: 0 2px 10px rgba(10, 132, 255, 0.35);
+  background: var(--sfx-accent);
+  color: var(--sfx-text-on-accent);
+  box-shadow: 0 2px 10px var(--sfx-accent-35);
 }
 .sfx-update-btn--primary:hover:not(:disabled) {
-  background: #0071e3;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.45);
+  background: var(--sfx-accent-hover);
+  box-shadow: 0 4px 14px var(--sfx-accent-35);
 }
 .sfx-update-btn--primary:active:not(:disabled) {
   transform: translateY(1px);
@@ -218,25 +218,25 @@
 }
 
 .sfx-update-btn--secondary {
-  background: #18181c;
-  border-color: #2e2e34;
-  color: #cbd5e1;
+  background: var(--sfx-surface-raised);
+  border-color: var(--sfx-border);
+  color: var(--sfx-text-secondary);
 }
 .sfx-update-btn--secondary:hover {
-  background: #222228;
-  color: #ffffff;
+  background: var(--sfx-surface-raised);
+  color: var(--sfx-text);
 }
 
 /* ── Settings Section Styling ── */
 .sfx-update-section {
-  border-top: 1px solid #232328;
+  border-top: 1px solid var(--sfx-border);
   padding-top: 18px;
   margin-top: 18px;
 }
 
 .sfx-update-card {
-  background: #101014;
-  border: 1px solid #232328;
+  background: var(--sfx-surface-sunken);
+  border: 1px solid var(--sfx-border);
   border-radius: 8px;
   padding: 16px;
   display: flex;
@@ -252,11 +252,11 @@
 }
 
 .sfx-update-label {
-  color: #8c8c96;
+  color: var(--sfx-text-muted);
 }
 
 .sfx-update-val {
-  color: #ffffff;
+  color: var(--sfx-text);
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -275,19 +275,19 @@
 
 .sfx-update-badge--latest {
   background: rgba(48, 209, 88, 0.15);
-  color: #30d158;
+  color: var(--sfx-positive);
   border: 1px solid rgba(48, 209, 88, 0.35);
 }
 
 .sfx-update-badge--available {
-  background: rgba(10, 132, 255, 0.18);
-  color: #38bdf8;
-  border: 1px solid rgba(10, 132, 255, 0.4);
+  background: var(--sfx-accent-20);
+  color: var(--sfx-accent);
+  border: 1px solid var(--sfx-accent-35);
 }
 
 .sfx-update-badge--warn {
   background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
+  color: var(--sfx-caution);
   border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
@@ -299,7 +299,7 @@
   user-select: none;
 }
 .sfx-update-toggle-label input[type="checkbox"] {
-  accent-color: #0a84ff;
+  accent-color: var(--sfx-accent);
   width: 14px;
   height: 14px;
   cursor: pointer;

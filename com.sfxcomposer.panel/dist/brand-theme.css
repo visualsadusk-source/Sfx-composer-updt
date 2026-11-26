@@ -1,55 +1,8 @@
 /*
- * SFX Composer — Official Brand Design System & Theme Stylesheet
- * 
- * Palette extracted from the official SFX Composer brand identity:
- * - Deep Navy Blue:        #060d1b / #081024 / #0d1b33
- * - Rich Royal Blue:       #104080 / #0a84ff / #0d62d6
- * - Soft Steel Blue:       #4a70a2 / #5b7fac / #6a8cb3
- * - Light Blue Highlights: #7ec8ff / #9cd5ff / #38bdf8
- * - White Contrast:        #ffffff
- * 
- * Foundation: Premium dark UI (#000000 / #0e0e12) optimized for Premiere Pro & After Effects.
- * Transitions: GPU-accelerated (transform, opacity, box-shadow) under 200ms.
+ * SFX Composer — Unified Theme-Aware Polish & Shared Component Styles
+ * Consumes centralized --sfx-* tokens from theme-tokens.css & Settings.
+ * Automatically adapts to Studio Dark, Ultra Dark, Light, and all 6 Accent Colors.
  */
-
-:root {
-  /* Official Brand Palette Tokens */
-  --sfx-brand-navy-dark: #060d1b;
-  --sfx-brand-navy: #081024;
-  --sfx-brand-navy-surface: #0d1b33;
-  --sfx-brand-royal-deep: #104080;
-  --sfx-brand-royal: #0a84ff;
-  --sfx-brand-royal-hover: #1f90ff;
-  --sfx-brand-royal-active: #0958b8;
-  --sfx-brand-steel-dark: #3a5c88;
-  --sfx-brand-steel: #5b7fac;
-  --sfx-brand-steel-light: #7d9ec4;
-  --sfx-brand-highlight: #38bdf8;
-  --sfx-brand-highlight-soft: #7ec8ff;
-  --sfx-brand-white: #ffffff;
-
-  /* Official Brand Gradients */
-  --sfx-brand-gradient: linear-gradient(135deg, #104080 0%, #0a84ff 52%, #38bdf8 100%);
-  --sfx-brand-gradient-hover: linear-gradient(135deg, #144e99 0%, #2094ff 52%, #56c8ff 100%);
-  --sfx-brand-gradient-active: linear-gradient(135deg, #0d366d 0%, #086fd6 52%, #22abed 100%);
-  --sfx-brand-gradient-subtle: linear-gradient(135deg, rgba(16, 64, 128, 0.4) 0%, rgba(10, 132, 255, 0.2) 60%, rgba(56, 189, 248, 0.12) 100%);
-  --sfx-brand-gradient-surface: linear-gradient(180deg, rgba(16, 64, 128, 0.12) 0%, rgba(8, 16, 36, 0.3) 100%);
-  --sfx-brand-gradient-border: linear-gradient(135deg, rgba(91, 127, 172, 0.5) 0%, rgba(10, 132, 255, 0.4) 50%, rgba(56, 189, 248, 0.6) 100%);
-
-  /* Brand Elevation & Glow */
-  --sfx-brand-glow: 0 0 12px rgba(10, 132, 255, 0.25);
-  --sfx-brand-glow-lg: 0 0 20px rgba(56, 189, 248, 0.22);
-  --sfx-brand-glow-focus: 0 0 0 2px rgba(10, 132, 255, 0.35), 0 0 10px rgba(56, 189, 248, 0.25);
-  --sfx-brand-border-subtle: rgba(91, 127, 172, 0.22);
-  --sfx-brand-border-active: rgba(126, 200, 255, 0.45);
-
-  /* Overrides for core theme variables */
-  --sfx-accent: #0a84ff;
-  --sfx-accent-hover: #1f90ff;
-  --sfx-accent-active: #0958b8;
-  --sfx-text-on-accent: #ffffff;
-  --sfx-waveform-played: #38bdf8;
-}
 
 /* ==========================================================================
    1. Header Mark & Shell Branding
@@ -60,7 +13,7 @@
   width: 22px;
   height: 22px;
   border-radius: 5px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 0 8px rgba(10, 132, 255, 0.25);
+  box-shadow: var(--sfx-shadow-sm), 0 0 8px var(--sfx-accent-25);
   -webkit-user-drag: none;
   user-select: none;
   opacity: 1;
@@ -69,344 +22,201 @@
 
 .sfx-shell__header:hover .sfx-shell__mark {
   transform: scale(1.08);
-  box-shadow: 0 3px 10px rgba(10, 132, 255, 0.4), 0 0 12px rgba(56, 189, 248, 0.3);
-  filter: brightness(1.06);
+  box-shadow: 0 3px 10px var(--sfx-accent-35), 0 0 12px var(--sfx-accent-25);
 }
 
-/* Header toolbar buttons with brand gradient */
+/* Header toolbar buttons */
 .sfx-hm__btn {
   transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, color 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sfx-hm__btn:hover:not(:disabled) {
-  background: rgba(16, 64, 128, 0.18);
-  border-color: rgba(91, 127, 172, 0.35);
-  color: #ffffff;
+  background: var(--sfx-surface-hover);
+  border-color: var(--sfx-border-strong);
+  color: var(--sfx-text);
 }
 
 .sfx-hm__btn[aria-pressed='true'],
 .sfx-hm__btn.is-active {
-  background: var(--sfx-brand-gradient) !important;
-  border-color: rgba(126, 200, 255, 0.45) !important;
-  color: #ffffff !important;
+  background: var(--sfx-accent) !important;
+  border-color: var(--sfx-accent) !important;
+  color: var(--sfx-text-on-accent) !important;
   opacity: 1 !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.35), 0 0 1px rgba(126, 200, 255, 0.6) !important;
+  box-shadow: 0 2px 8px var(--sfx-accent-35) !important;
 }
 
 .sfx-hm__btn[aria-pressed='true']:hover,
 .sfx-hm__btn.is-active:hover {
-  background: var(--sfx-brand-gradient-hover) !important;
+  background: var(--sfx-accent-hover) !important;
+  border-color: var(--sfx-accent-hover) !important;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.45) !important;
+  box-shadow: 0 4px 12px var(--sfx-accent-45) !important;
 }
 
 /* ==========================================================================
-   2. Sound Library
+   2. Sound Library & Shared Controls
    ========================================================================== */
 
-/* Active category pill */
-.sfx-cat--on {
-  background: var(--sfx-brand-gradient-subtle) !important;
-  border-left: 2px solid var(--sfx-brand-highlight) !important;
-  color: #ffffff !important;
-}
-
-.sfx-cat--on .sfx-cat__icon {
-  color: var(--sfx-brand-highlight);
-}
-
-.sfx-cat--on .sfx-cat__count {
-  background: rgba(16, 64, 128, 0.35);
-  color: var(--sfx-brand-highlight-soft);
-}
-
-/* Category transition */
 .sfx-cat {
   transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
 }
 
 .sfx-cat:hover:not(.sfx-cat--on) {
-  background: rgba(16, 64, 128, 0.14);
+  background: var(--sfx-surface-hover);
 }
 
-/* Primary buttons with brand gradient */
+.sfx-cat--on {
+  background: var(--sfx-accent-12) !important;
+  border-left: 2px solid var(--sfx-accent) !important;
+  color: var(--sfx-text) !important;
+}
+
+.sfx-cat--on .sfx-cat__icon {
+  color: var(--sfx-accent);
+}
+
+.sfx-cat--on .sfx-cat__count {
+  background: var(--sfx-accent-20);
+  color: var(--sfx-accent);
+}
+
 .sfx-button:not(.sfx-button--quiet) {
-  background: var(--sfx-brand-gradient);
-  color: #ffffff;
-  border: 1px solid rgba(126, 200, 255, 0.3);
-  box-shadow: 0 2px 6px rgba(10, 132, 255, 0.25);
+  background: var(--sfx-accent);
+  color: var(--sfx-text-on-accent);
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px var(--sfx-accent-25);
   transition: background 150ms ease, box-shadow 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sfx-button:not(.sfx-button--quiet):hover:not(:disabled) {
-  background: var(--sfx-brand-gradient-hover);
-  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+  background: var(--sfx-accent-hover);
+  box-shadow: 0 4px 12px var(--sfx-accent-35);
   transform: translateY(-1px);
 }
 
 .sfx-button:not(.sfx-button--quiet):active:not(:disabled) {
-  background: var(--sfx-brand-gradient-active);
+  background: var(--sfx-accent-active);
   transform: translateY(0);
 }
 
-/* Selected row in sound library */
 .sfx-row--selected,
 .sfx-table__row--selected {
-  background: rgba(10, 132, 255, 0.12) !important;
-  border-left: 2px solid var(--sfx-brand-royal) !important;
+  background: var(--sfx-accent-12) !important;
+  border-left: 2px solid var(--sfx-accent) !important;
 }
 
-/* Input focus states */
 .sfx-input:focus,
 .sfx-select:focus,
 input[type="text"]:focus,
 input[type="search"]:focus {
-  outline: none !important;
-  border-color: var(--sfx-brand-royal) !important;
-  box-shadow: var(--sfx-brand-glow-focus) !important;
+  border-color: var(--sfx-accent) !important;
+  box-shadow: 0 0 0 2px var(--sfx-accent-20) !important;
+  outline: none;
 }
 
 /* ==========================================================================
-   3. BGM Flow Module
+   3. Tab-Specific Accent Alignment
    ========================================================================== */
 
-/* Mode buttons */
-.sfx-bf__mode-btn {
-  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+.sfx-bf__mode-btn.is-active,
+.sfx-au__tab.is-active,
+.sfx-an__filter-btn.is-active {
+  background: var(--sfx-accent) !important;
+  color: var(--sfx-text-on-accent) !important;
+  border-color: var(--sfx-accent) !important;
+  box-shadow: 0 2px 8px var(--sfx-accent-35);
 }
 
-.sfx-bf__mode-btn:hover:not(.is-active) {
-  background: rgba(16, 64, 128, 0.16);
-  border-color: rgba(91, 127, 172, 0.35);
-  color: #ffffff;
-}
-
-.sfx-bf__mode-btn.is-active {
-  background: var(--sfx-brand-gradient) !important;
-  border-color: rgba(126, 200, 255, 0.45) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.32) !important;
-}
-
-/* Selected style card */
-.sfx-bf__style-card {
-  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
-
-.sfx-bf__style-card:hover {
-  border-color: rgba(91, 127, 172, 0.4);
-  transform: translateY(-1px);
-}
-
-.sfx-bf__style-card.is-selected {
-  border-color: var(--sfx-brand-highlight) !important;
-  background: var(--sfx-brand-gradient-subtle) !important;
-  box-shadow: 0 0 12px rgba(10, 132, 255, 0.22) !important;
+.sfx-bf__style-card.is-selected,
+.sfx-sc__card.is-selected {
+  border-color: var(--sfx-accent) !important;
+  background: var(--sfx-accent-12) !important;
+  box-shadow: 0 0 12px var(--sfx-accent-20);
 }
 
 .sfx-bf__style-card.is-selected .sfx-bf__style-name {
-  color: #ffffff !important;
+  color: var(--sfx-accent);
 }
 
-/* BGM Flow action buttons */
-.sfx-bf__btn-primary {
-  background: var(--sfx-brand-gradient) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(126, 200, 255, 0.35) !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3) !important;
-  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+.sfx-bf__btn-primary,
+.sfx-ai__send-btn,
+.sfx-sc__btn-primary {
+  background: var(--sfx-accent) !important;
+  color: var(--sfx-text-on-accent) !important;
+  border-color: transparent !important;
+  box-shadow: 0 2px 8px var(--sfx-accent-25);
 }
 
-.sfx-bf__btn-primary:hover:not(:disabled) {
-  background: var(--sfx-brand-gradient-hover) !important;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.45) !important;
-  transform: translateY(-1px);
+.sfx-bf__btn-primary:hover:not(:disabled),
+.sfx-ai__send-btn:hover:not(:disabled),
+.sfx-sc__btn-primary:hover:not(:disabled) {
+  background: var(--sfx-accent-hover) !important;
+  box-shadow: 0 4px 12px var(--sfx-accent-35);
 }
 
-/* Slider thumb accent */
-.sfx-bf__slider::-webkit-slider-thumb {
-  background: var(--sfx-brand-highlight) !important;
-  box-shadow: 0 0 6px rgba(56, 189, 248, 0.5) !important;
+.sfx-bf__slider::-webkit-slider-thumb,
+.sfx-au__slider::-webkit-slider-thumb {
+  background: var(--sfx-accent) !important;
+  box-shadow: 0 0 8px var(--sfx-accent-45) !important;
 }
 
-/* ==========================================================================
-   4. AI SFX Assistant Module
-   ========================================================================== */
-
-/* User chat bubble */
 .sfx-ai__msg--user {
-  background: var(--sfx-brand-gradient) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.25) !important;
-  border: 1px solid rgba(126, 200, 255, 0.25);
-}
-
-/* Send button */
-.sfx-ai__send-btn {
-  background: var(--sfx-brand-gradient) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(126, 200, 255, 0.35) !important;
-  box-shadow: 0 2px 6px rgba(10, 132, 255, 0.25);
-  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
-}
-
-.sfx-ai__send-btn:hover:not(:disabled) {
-  background: var(--sfx-brand-gradient-hover) !important;
-  box-shadow: 0 3px 10px rgba(56, 189, 248, 0.38) !important;
-  transform: translateY(-1px);
-}
-
-/* Prompt suggestion chips */
-.sfx-ai__chip {
-  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+  background: var(--sfx-accent-15) !important;
+  border-color: var(--sfx-accent-35) !important;
 }
 
 .sfx-ai__chip:hover {
-  background: rgba(16, 64, 128, 0.22) !important;
-  border-color: rgba(56, 189, 248, 0.45) !important;
-  color: #ffffff !important;
+  border-color: var(--sfx-accent) !important;
+  background: var(--sfx-accent-12) !important;
 }
 
-/* Status indicator badge */
 .sfx-ai__status-badge {
-  background: rgba(16, 64, 128, 0.28) !important;
-  border: 1px solid rgba(56, 189, 248, 0.32) !important;
-  color: var(--sfx-brand-highlight) !important;
+  background: var(--sfx-accent-12) !important;
+  border-color: var(--sfx-accent-35) !important;
+  color: var(--sfx-accent) !important;
 }
 
-/* ==========================================================================
-   5. Audio Tools Studio Module
-   ========================================================================== */
-
-.sfx-au__tab {
-  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.sfx-au__tab:hover:not(.is-active) {
-  background: rgba(16, 64, 128, 0.16);
-  border-color: rgba(91, 127, 172, 0.35);
-  color: #ffffff;
-}
-
-.sfx-au__tab.is-active {
-  background: var(--sfx-brand-gradient) !important;
-  border-color: rgba(126, 200, 255, 0.45) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.32) !important;
-}
-
-/* Sliders active track & thumb */
-.sfx-au__slider::-webkit-slider-thumb {
-  background: var(--sfx-brand-royal) !important;
-  border: 2px solid var(--sfx-brand-highlight) !important;
-  box-shadow: 0 0 6px rgba(10, 132, 255, 0.4) !important;
-}
-
-/* ==========================================================================
-   6. Scene AI Designer Module
-   ========================================================================== */
-
-.sfx-sc__btn-primary {
-  background: var(--sfx-brand-gradient) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(126, 200, 255, 0.35) !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.3) !important;
-  transition: background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
-}
-
-.sfx-sc__btn-primary:hover:not(:disabled) {
-  background: var(--sfx-brand-gradient-hover) !important;
-  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.45) !important;
-  transform: translateY(-1px);
-}
-
-.sfx-sc__card.is-selected {
-  border-color: var(--sfx-brand-highlight) !important;
-  background: var(--sfx-brand-gradient-subtle) !important;
-  box-shadow: 0 0 10px rgba(10, 132, 255, 0.2) !important;
-}
-
-/* ==========================================================================
-   7. Analytics Dashboard Module
-   ========================================================================== */
-
-/* Top gradient accent for key stat cards */
 .sfx-an__card--hero,
 .sfx-an__card:first-child {
-  position: relative;
-  overflow: hidden;
+  border-color: var(--sfx-accent-35);
 }
 
-.sfx-an__card--hero::before,
-.sfx-an__card:first-child::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--sfx-brand-gradient);
-}
-
-/* Period filter button */
-.sfx-an__filter-btn {
-  transition: all 150ms ease;
-}
-
-.sfx-an__filter-btn:hover:not(.is-active) {
-  background: rgba(16, 64, 128, 0.16);
-  color: #ffffff;
-}
-
-.sfx-an__filter-btn.is-active {
-  background: var(--sfx-brand-gradient) !important;
-  border-color: rgba(126, 200, 255, 0.45) !important;
-  color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(10, 132, 255, 0.32) !important;
-}
-
-/* Favorite star yellow preserved */
 .sfx-an__fav-btn.is-favourited svg,
 .sfx-cat__icon--star svg {
-  color: #ffd60a !important;
-  fill: #ffd60a !important;
+  color: var(--sfx-favourite) !important;
+  fill: var(--sfx-favourite);
 }
 
-
 /* ==========================================================================
-   8. Connect with SFX Composer — Social Media Cards
+   4. Social Community Cards (Settings)
    ========================================================================== */
 
 .sfx-social-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 8px;
 }
 
 .sfx-social-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 14px;
-  background: #0d1527;
-  border: 1px solid rgba(91, 127, 172, 0.28);
-  border-radius: 9px;
-  color: #ffffff;
+  padding: 10px 12px;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  border-radius: var(--sfx-radius);
+  color: var(--sfx-text);
   cursor: pointer;
   text-align: left;
-  text-decoration: none;
-  font: inherit;
-  width: 100%;
-  box-sizing: border-box;
-  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: inherit;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
 }
 
 .sfx-social-card:hover {
-  background: #111e38;
-  border-color: rgba(56, 189, 248, 0.45);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(10, 132, 255, 0.2);
+  background: var(--sfx-surface-hover);
+  border-color: var(--sfx-accent-45);
   transform: translateY(-1px);
+  box-shadow: var(--sfx-shadow-sm);
 }
 
 .sfx-social-card:active {
@@ -414,176 +224,160 @@ input[type="search"]:focus {
 }
 
 .sfx-social-card__icon {
-  width: 30px;
-  height: 30px;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 auto;
+  background: var(--sfx-subtle-bg);
 }
 
 .sfx-social-card__icon--discord {
-  background: rgba(88, 101, 242, 0.15);
-  color: #7289da;
-  border: 1px solid rgba(88, 101, 242, 0.3);
+  background: rgba(88, 101, 242, 0.14);
+  color: #5865f2;
 }
 
 .sfx-social-card__icon--instagram {
-  background: linear-gradient(135deg, rgba(225, 48, 108, 0.15) 0%, rgba(253, 29, 29, 0.15) 50%, rgba(245, 96, 64, 0.15) 100%);
-  color: #f67280;
-  border: 1px solid rgba(225, 48, 108, 0.3);
+  background: rgba(225, 48, 108, 0.14);
+  color: #e1306c;
 }
 
 .sfx-social-card__icon--youtube {
-  background: rgba(255, 0, 0, 0.12);
-  color: #ff4444;
-  border: 1px solid rgba(255, 0, 0, 0.25);
+  background: rgba(255, 0, 0, 0.14);
+  color: #ff2d2d;
 }
 
 .sfx-social-card__info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   flex: 1 1 auto;
   min-width: 0;
 }
 
 .sfx-social-card__name {
-  font-size: 12.5px;
-  font-weight: 650;
-  color: #ffffff;
-  letter-spacing: -0.01em;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sfx-text);
+  line-height: 1.25;
 }
 
 .sfx-social-card__handle {
   font-size: 11px;
-  color: var(--sfx-brand-highlight-soft, #7ec8ff);
+  color: var(--sfx-text-muted);
+  margin-top: 2px;
 }
 
 .sfx-social-card__arrow {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 14px;
-  font-weight: 600;
-  transition: transform 140ms ease, color 140ms ease;
   flex: 0 0 auto;
+  color: var(--sfx-text-muted);
+  transition: transform 150ms ease, color 150ms ease;
 }
 
 .sfx-social-card:hover .sfx-social-card__arrow {
-  color: #ffffff;
-  transform: translate(2px, -2px);
+  color: var(--sfx-accent);
+  transform: translateX(2px);
 }
 
 /* ==========================================================================
-   SFX Buddy Settings Display Controls
+   5. SFX Buddy Settings Section
    ========================================================================== */
 
 .sfx-buddy-settings-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .sfx-buddy-mode-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-top: 8px;
-  margin-bottom: 8px;
 }
 
 .sfx-buddy-mode-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 5px;
   padding: 10px 12px;
-  background: #0d1322;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  border-radius: var(--sfx-radius);
+  color: var(--sfx-text);
   cursor: pointer;
-  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
   text-align: left;
-  user-select: none;
-  color: inherit;
-  width: 100%;
+  font-family: inherit;
+  transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 
 .sfx-buddy-mode-card:hover {
-  background: #121b30;
-  border-color: rgba(56, 189, 248, 0.4);
-  transform: translateY(-1px);
+  background: var(--sfx-surface-hover);
+  border-color: var(--sfx-border-strong);
 }
 
 .sfx-buddy-mode-card--active {
-  background: rgba(10, 132, 255, 0.12) !important;
-  border-color: var(--sfx-accent, #0a84ff) !important;
-  box-shadow: 0 0 10px rgba(10, 132, 255, 0.2);
+  background: var(--sfx-accent-12);
+  border-color: var(--sfx-accent);
+  box-shadow: 0 0 12px var(--sfx-accent-20);
 }
 
 .sfx-buddy-mode-card__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  margin-bottom: 8px;
-  color: #7ec8ff;
-  flex: 0 0 auto;
-}
-
-.sfx-buddy-mode-card--active .sfx-buddy-mode-card__icon {
-  background: var(--sfx-brand-gradient, linear-gradient(135deg, #104080 0%, #0a84ff 52%, #38bdf8 100%));
-  color: #ffffff;
-}
-
-.sfx-buddy-mode-card__name {
-  font-size: 11.5px;
-  font-weight: 650;
-  color: #ffffff;
+  color: var(--sfx-text-muted);
   margin-bottom: 2px;
 }
 
+.sfx-buddy-mode-card--active .sfx-buddy-mode-card__icon {
+  color: var(--sfx-accent);
+}
+
+.sfx-buddy-mode-card__name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sfx-text);
+}
+
 .sfx-buddy-mode-card__desc {
-  font-size: 10px;
-  color: #8b949e;
-  line-height: 1.3;
+  font-size: 11px;
+  color: var(--sfx-text-muted);
+  line-height: 1.35;
 }
 
 .sfx-buddy-toggle-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: #0d1322;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  margin-bottom: 6px;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--sfx-surface-raised);
+  border: 1px solid var(--sfx-border);
+  border-radius: var(--sfx-radius);
 }
 
 .sfx-buddy-toggle-label {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .sfx-buddy-toggle-title {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--sfx-text);
 }
 
 .sfx-buddy-toggle-sub {
-  font-size: 10px;
-  color: #8b949e;
+  font-size: 11px;
+  color: var(--sfx-text-muted);
 }
 
-/* Switch UI */
 .sfx-toggle-switch {
   position: relative;
   display: inline-block;
-  width: 36px;
-  height: 20px;
+  width: 34px;
+  height: 19px;
   flex: 0 0 auto;
 }
 
@@ -600,30 +394,48 @@ input[type="search"]:focus {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #232326;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: 160ms cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 999px;
+  background-color: var(--sfx-border);
+  border: 1px solid var(--sfx-border-strong);
+  transition: .2s;
+  border-radius: 20px;
 }
 
 .sfx-toggle-slider:before {
   position: absolute;
-  content: '';
-  height: 14px;
-  width: 14px;
+  content: "";
+  height: 13px;
+  width: 13px;
   left: 2px;
   bottom: 2px;
-  background-color: #8b949e;
-  transition: 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--sfx-text);
+  transition: .2s;
   border-radius: 50%;
 }
 
 .sfx-toggle-switch input:checked + .sfx-toggle-slider {
-  background: var(--sfx-brand-royal, #0a84ff);
-  border-color: var(--sfx-brand-highlight, #38bdf8);
+  background: var(--sfx-accent);
+  border-color: var(--sfx-accent);
 }
 
 .sfx-toggle-switch input:checked + .sfx-toggle-slider:before {
-  transform: translateX(16px);
-  background-color: #ffffff;
+  background-color: var(--sfx-text-on-accent);
+  transform: translateX(15px);
+}
+
+/* ==========================================================================
+   6. Global Settings Overlay Priority
+   ========================================================================== */
+
+.sfx-settings {
+  z-index: 1000005 !important;
+  background: var(--sfx-surface) !important;
+  color: var(--sfx-text) !important;
+}
+
+.sfx-profile.is-active,
+html.sfx-has-settings-open .sfx-profile {
+  background: var(--sfx-accent) !important;
+  border-color: var(--sfx-accent) !important;
+  color: var(--sfx-text-on-accent) !important;
+  box-shadow: 0 0 8px var(--sfx-accent-35);
 }

@@ -9,9 +9,9 @@
   z-index: 999990;
   display: none;
   flex-direction: column;
-  background: var(--sfx-bg, #121214);
+  background: var(--sfx-surface);
   color: var(--sfx-text, #e8e8e8);
-  font: 12px/1.45 var(--sfx-font, -apple-system, 'Segoe UI', system-ui, sans-serif);
+  font: 12px/1.45 var(--sfx-font);
 }
 #sfx-scene-designer.sfx-sd.is-open {
   display: flex;
@@ -37,7 +37,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   height: 28px;
   padding: 0 10px;
   border-radius: 6px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: transparent;
   color: inherit;
   cursor: pointer;
@@ -56,7 +56,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
 .sfx-sd__title svg {
   width: 16px;
   height: 16px;
-  color: #60a5fa;
+  color: var(--sfx-accent);
 }
 
 .sfx-sd__body {
@@ -75,7 +75,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   height: 30px;
   padding: 0 14px;
   border-radius: 8px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.14));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: transparent;
   color: inherit;
   font: 600 11px/1 inherit;
@@ -86,22 +86,22 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   cursor: default;
 }
 .sfx-sd__btn--primary {
-  background: #2563eb;
+  background: var(--sfx-accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--sfx-text-on-accent);
 }
 .sfx-sd__btn--accent {
-  background: #7c3aed;
+  background: var(--sfx-accent);
   border-color: transparent;
-  color: #fff;
+  color: var(--sfx-text);
 }
 
 .sfx-sd__status {
   margin-bottom: 12px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid rgba(59, 130, 246, 0.35);
-  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid var(--sfx-accent-35);
+  background: var(--sfx-accent-12);
   font-size: 12px;
 }
 .sfx-sd__status.is-error {
@@ -113,8 +113,8 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   margin-bottom: 14px;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.08));
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--sfx-border, var(--sfx-border));
+  background: var(--sfx-subtle-bg);
 }
 .sfx-sd__note {
   margin-top: 6px;
@@ -144,7 +144,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   margin-bottom: 12px;
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.08));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: var(--sfx-surface, rgba(24, 24, 28, 0.8));
 }
 .sfx-sd__scene-head {
@@ -159,7 +159,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
 }
 .sfx-sd__layers {
   font-size: 11px;
-  color: #93c5fd;
+  color: var(--sfx-accent);
   margin-bottom: 8px;
 }
 .sfx-sd__muted {
@@ -175,13 +175,13 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   margin-bottom: 12px;
   padding: 8px 12px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.08));
+  background: var(--sfx-subtle-bg);
+  border: 1px solid var(--sfx-border, var(--sfx-border));
 }
 .sfx-sd__batch-count {
   font-weight: 600;
   font-size: 11px;
-  color: #93c5fd;
+  color: var(--sfx-accent);
   flex: 1 1 auto;
 }
 
@@ -191,12 +191,12 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   gap: 8px;
   align-items: center;
   padding: 8px 6px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--sfx-border);
   border-radius: 6px;
   transition: background 0.15s ease;
 }
 .sfx-sd__event:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--sfx-subtle-bg);
 }
 .sfx-sd__event.is-off {
   opacity: 0.45;
@@ -222,12 +222,12 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   background: rgba(147, 197, 253, 0.15);
-  color: #93c5fd;
+  color: var(--sfx-accent);
   flex-shrink: 0;
 }
 .sfx-sd__role-badge--foley {
   background: rgba(52, 211, 153, 0.15);
-  color: #34d399;
+  color: var(--sfx-positive);
 }
 .sfx-sd__role-badge--ambience,
 .sfx-sd__role-badge--ambient {
@@ -237,12 +237,12 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
 .sfx-sd__role-badge--transition,
 .sfx-sd__role-badge--whoosh {
   background: rgba(251, 146, 60, 0.15);
-  color: #fb923c;
+  color: var(--sfx-caution);
 }
 .sfx-sd__role-badge--impact,
 .sfx-sd__role-badge--hit {
   background: rgba(248, 113, 113, 0.15);
-  color: #f87171;
+  color: var(--sfx-critical);
 }
 .sfx-sd__confidence-pill {
   display: inline-block;
@@ -251,7 +251,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   font-size: 9px;
   font-weight: 600;
   background: rgba(34, 197, 94, 0.12);
-  color: #4ade80;
+  color: var(--sfx-positive);
   flex-shrink: 0;
 }
 .sfx-sd__event-name {
@@ -274,7 +274,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: transparent;
   color: inherit;
   cursor: pointer;
@@ -284,10 +284,10 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   height: 12px;
 }
 .sfx-sd__icon-btn--del {
-  color: #9ca3af;
+  color: var(--sfx-text-muted);
 }
 .sfx-sd__icon-btn--del:hover {
-  color: #ef4444;
+  color: var(--sfx-critical);
   border-color: rgba(239, 68, 68, 0.4);
 }
 .sfx-sd__event input[type='range'] {
@@ -306,7 +306,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
 .sfx-sd__picker-head {
   font-size: 11px;
   font-weight: 600;
-  color: #93c5fd;
+  color: var(--sfx-accent);
   margin-bottom: 6px;
 }
 .sfx-sd__picker-search {
@@ -316,8 +316,8 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   padding: 0 8px;
   margin-bottom: 8px;
   border-radius: 6px;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.15));
-  background: #141418;
+  border: 1px solid var(--sfx-border, var(--sfx-border));
+  background: var(--sfx-surface);
   color: inherit;
   font-size: 11px;
 }
@@ -328,10 +328,10 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   padding: 4px 6px;
   border-radius: 4px;
   margin-bottom: 3px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--sfx-subtle-bg);
 }
 .sfx-sd__candidate-row:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--sfx-btn-secondary-bg);
 }
 .sfx-sd__candidate-name {
   flex: 1 1 auto;
@@ -357,7 +357,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   padding: 10px 12px;
   border-radius: 10px;
   border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.1));
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--sfx-subtle-bg);
 }
 .sfx-sd__conn-head {
   display: flex;
@@ -383,7 +383,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   flex: 0 0 auto;
 }
 .sfx-sd__dot.is-ok {
-  background: #22c55e;
+  background: var(--sfx-positive);
   box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
 }
 .sfx-sd__dot.is-warn {
@@ -391,7 +391,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
 }
 .sfx-sd__dot.is-bad {
-  background: #ef4444;
+  background: var(--sfx-critical);
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
 }
 .sfx-sd__dot.is-checking {
@@ -411,7 +411,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
 }
 .sfx-sd__conn-error {
   font-size: 11px;
-  color: #fca5a5;
+  color: var(--sfx-critical);
   margin-bottom: 6px;
 }
 .sfx-sd__conn-actions {
@@ -431,8 +431,8 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   margin: -6px 0 12px;
   padding: 8px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--sfx-border);
+  background: var(--sfx-subtle-bg);
 }
 .sfx-sd__appstrip-text {
   font-size: 11px;
@@ -458,7 +458,7 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   flex: 1 1 auto;
   height: 30px;
   border-radius: 8px;
-  border: 1px solid var(--sfx-border, rgba(255,255,255,0.14));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   background: #16161a;
   color: inherit;
   padding: 0 10px;
@@ -480,8 +480,8 @@ html.sfx-has-header-menu #sfx-scene-designer.sfx-sd {
   font-size: 11px;
   font-family: ui-monospace, Menlo, Consolas, monospace;
 }
-.sfx-sd__ai-log-line { margin-bottom: 4px; color: #d1d5db; }
-.sfx-sd__ai-log-line.is-error { color: #fca5a5; }
+.sfx-sd__ai-log-line { margin-bottom: 4px; color: var(--sfx-text-secondary); }
+.sfx-sd__ai-log-line.is-error { color: var(--sfx-critical); }
 .sfx-sd__btn--small {
   height: 24px;
   padding: 0 10px;

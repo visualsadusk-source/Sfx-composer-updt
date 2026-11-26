@@ -17,7 +17,7 @@
   height: 28px;
   padding: 0 10px 0 8px;
   border-radius: 999px;
-  border: 1px solid var(--sfx-border-strong, rgba(255, 255, 255, 0.25));
+  border: 1px solid var(--sfx-border-strong, var(--sfx-border-strong));
   background: var(--sfx-surface-raised, rgba(24, 24, 28, 0.92));
   color: var(--sfx-text, #fff);
   cursor: pointer;
@@ -43,7 +43,7 @@
   max-height: 470px;
   overflow-y: auto;
   background: var(--sfx-surface-raised, #141418);
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.15));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   border-radius: var(--sfx-radius-large, 10px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   padding: 10px;
@@ -113,7 +113,7 @@
   justify-content: center;
   gap: 5px;
   height: 28px;
-  border: 1px solid var(--sfx-border-strong, rgba(255, 255, 255, 0.2));
+  border: 1px solid var(--sfx-border-strong, var(--sfx-border-strong));
   border-radius: var(--sfx-radius, 6px);
   background: transparent;
   color: var(--sfx-text, #fff);
@@ -147,7 +147,7 @@
 }
 
 .sfx-mm__settings {
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   border-radius: var(--sfx-radius, 6px);
   padding: 8px;
   margin-bottom: 8px;
@@ -168,7 +168,7 @@
 .sfx-mm__row select {
   background: var(--sfx-surface-sunken, rgba(0, 0, 0, 0.3));
   color: var(--sfx-text, #fff);
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.15));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   border-radius: var(--sfx-radius, 4px);
   font-size: 10px;
   padding: 3px 5px;
@@ -187,7 +187,7 @@
 .sfx-mm__table-wrap {
   max-height: 210px;
   overflow: auto;
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   border-radius: var(--sfx-radius, 6px);
   margin-bottom: 6px;
 }
@@ -208,7 +208,7 @@
 }
 .sfx-mm__table td {
   padding: 4px 6px;
-  border-top: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.08));
+  border-top: 1px solid var(--sfx-border, var(--sfx-border));
   vertical-align: top;
   word-break: break-word;
 }
@@ -227,7 +227,7 @@
 }
 
 .sfx-mm__report {
-  border: 1px solid var(--sfx-border, rgba(255, 255, 255, 0.12));
+  border: 1px solid var(--sfx-border, var(--sfx-border));
   border-radius: var(--sfx-radius, 6px);
   padding: 7px 8px;
   margin-bottom: 6px;
